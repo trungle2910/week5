@@ -19,14 +19,6 @@ const DetailPage = () => {
     setShowTrailer(false);
   };
 
-  const getMovieDetailData = async (movieId) => {
-    const API_URL = `${process.env.REACT_APP_URL}/movie/${movieId}?${process.env.REACT_APP_API_KEY}`;
-    const response = await fetch(API_URL);
-    const data = await response.json();
-    console.log(data);
-    return data;
-  };
-
   const handleOpenTrailer = () => {
     setShowTrailer(true);
   };
@@ -36,14 +28,17 @@ const DetailPage = () => {
       const getMovieDetail = async () => {
         try {
           setIsLoading(true);
-          const movie = await getMovieDetailData(MOVIE_ID);
-          console.log(movie);
-          setMovieDetail(movie);
-          setIsLoading(false);
+          const API_URL = `${process.env.REACT_APP_URL}/movie/${MOVIE_ID}?${process.env.REACT_APP_API_KEY}`;
+          const response = await fetch(API_URL);
+          const data = await response.json();
+          console.log("data from select", data);
+          setMovieDetail(data);
         } catch (error) {
           window.alert("not found");
         }
+        setIsLoading(false);
       };
+
       const getTrailer = async () => {
         try {
           setIsLoading(true);
@@ -52,11 +47,11 @@ const DetailPage = () => {
           );
           setMovieTrailer(res.data.results);
           //
-          setIsLoading(false);
-        } catch (error) {
-          setIsLoading(false);
-        }
+          // setIsLoading(false);
+        } catch (error) {}
+        setIsLoading(false);
       };
+      console.log("ID+++++", MOVIE_ID);
       getMovieDetail();
       getTrailer();
     } else {
@@ -67,16 +62,16 @@ const DetailPage = () => {
             `/movie/${MOVIE_ID}/reviews?${process.env.REACT_APP_API_KEY}&language=en-US&page=1`
           );
           setReviewList(res.data.results);
-          setIsLoading(false);
         } catch (error) {
           console.log("Not found");
         }
+        setIsLoading(false);
       };
       getReview();
     }
   }, [MOVIE_ID]);
 
-  return isLoading ? (
+  return isLoading || !movieDetail ? (
     <>
       <p>Loading</p>
     </>
