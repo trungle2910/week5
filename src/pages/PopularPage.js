@@ -32,7 +32,7 @@ const PopularPage = () => {
       setLoading(true);
       try {
         let res = await api.get(
-          `//movie/popular?${process.env.REACT_APP_API_KEY}&page=${pageNum}`
+          `/movie/popular?${process.env.REACT_APP_API_KEY}&page=${pageNum}`
         );
         setMovieList(res.data.results);
         setLoading(false);
