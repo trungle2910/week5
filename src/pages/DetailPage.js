@@ -31,53 +31,50 @@ const DetailPage = () => {
     setShowTrailer(true);
   };
 
-  const getMovieDetail = async () => {
-    try {
-      setIsLoading(true);
-      const movie = await getMovieDetailData(MOVIE_ID);
-      console.log(movie);
-      setMovieDetail(movie);
-      setIsLoading(false);
-    } catch (error) {
-      window.alert("not found");
-    }
-  };
-
-  const getReview = async () => {
-    try {
-      setIsLoading(true);
-      let res = await api.get(
-        `/movie/${MOVIE_ID}/reviews?${process.env.REACT_APP_API_KEY}&language=en-US&page=1`
-      );
-      setReviewList(res.data.results);
-      setIsLoading(false);
-    } catch (error) {
-      console.log("Not found");
-    }
-  };
-
-  const getTrailer = async () => {
-    try {
-      setIsLoading(true);
-      let res = await api.get(
-        `/movie/${MOVIE_ID}/videos?${process.env.REACT_APP_API_KEY}&language=en-US&page=1`
-      );
-      setMovieTrailer(res.data.results);
-      //
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
     if (isLoading) {
+      const getMovieDetail = async () => {
+        try {
+          setIsLoading(true);
+          const movie = await getMovieDetailData(MOVIE_ID);
+          console.log(movie);
+          setMovieDetail(movie);
+          setIsLoading(false);
+        } catch (error) {
+          window.alert("not found");
+        }
+      };
+      const getTrailer = async () => {
+        try {
+          setIsLoading(true);
+          let res = await api.get(
+            `/movie/${MOVIE_ID}/videos?${process.env.REACT_APP_API_KEY}&language=en-US&page=1`
+          );
+          setMovieTrailer(res.data.results);
+          //
+          setIsLoading(false);
+        } catch (error) {
+          setIsLoading(false);
+        }
+      };
       getMovieDetail();
       getTrailer();
     } else {
+      const getReview = async () => {
+        try {
+          setIsLoading(true);
+          let res = await api.get(
+            `/movie/${MOVIE_ID}/reviews?${process.env.REACT_APP_API_KEY}&language=en-US&page=1`
+          );
+          setReviewList(res.data.results);
+          setIsLoading(false);
+        } catch (error) {
+          console.log("Not found");
+        }
+      };
       getReview();
     }
-  }, []);
+  }, [MOVIE_ID]);
 
   return isLoading ? (
     <>
