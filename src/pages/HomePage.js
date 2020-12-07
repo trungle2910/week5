@@ -28,44 +28,49 @@ const HomePage = () => {
     e.preventDefault();
     setQuery(searchInput);
   };
-  const getData = async () => {
-    setLoading(true);
-    try {
-      let res = await api.get(
-        `/movie/now_playing?${process.env.REACT_APP_API_KEY}&page=${pageNum}`
-      );
-      setMovieList(res.data.results);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getSearch = async () => {
-    setLoading(true);
-    try {
-      let res = await api.get(
-        `/search/movie?${process.env.REACT_APP_API_KEY}&language=en-US&page=1&query=${query}`
-      );
-
-      setMovieList(res.data.results);
-      setLoading(false);
-    } catch (error) {
-      console.log("Not found");
-    }
-  };
-  useEffect(() => {
-    getData();
-  }, [pageNum]);
 
   useEffect(() => {
+    const getData = async () => {
+      setLoading(true);
+      try {
+        let res = await api.get(
+          `/movie/now_playing?${process.env.REACT_APP_API_KEY}&page=${pageNum}`
+        );
+        setMovieList(res.data.results);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     getData();
     if (query) {
+      const getSearch = async () => {
+        setLoading(true);
+        try {
+          let res = await api.get(
+            `/search/movie?${process.env.REACT_APP_API_KEY}&language=en-US&page=1&query=${query}`
+          );
+
+          setMovieList(res.data.results);
+          setLoading(false);
+        } catch (error) {
+          console.log("Not found");
+        }
+      };
       getSearch();
     } else {
       getData();
     }
-  }, [query]);
+  }, [pageNum, query]);
+
+  // useEffect(() => {
+  //   getData();
+  //   if (query) {
+  //     getSearch();
+  //   } else {
+  //     getData();
+  //   }
+  // }, [query]);
 
   return (
     <>
