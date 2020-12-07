@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import PublicNavbar from "./components/PublicNavbar";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import PopularPage from "./pages/PopularPage";
+import TopRatedPage from "./pages/TopRatedPage";
+import DetailPage from "./pages/DetailPage";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <PublicNavbar />
+
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/popular" component={PopularPage} />
+          <Route exact path="/toprate" component={TopRatedPage} />
+          <Route exact path="/movies/:id" component={DetailPage} />
+        </Switch>
+      </Router>
+    </>
   );
 }
 
