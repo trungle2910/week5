@@ -104,14 +104,10 @@ const DetailPage = () => {
               </div>
               <div className="d-flex control">
                 <div>
-                  <i class="fab fa-imdb imb-icon" aria-hidden="true">
-                    <span class="imb-score">{movieDetail.vote_average}</span>
-                  </i>
+                  <span class="imb-score">{movieDetail.vote_average}</span>
                 </div>
                 <div>
-                  <i class="fas fa-users users-icon" aria-hidden="true">
-                    <span class="imb-score-1">{movieDetail.popularity}</span>
-                  </i>
+                  <span class="imb-score-1">{movieDetail.popularity}</span>
                 </div>
               </div>
               <div className="text-group">
