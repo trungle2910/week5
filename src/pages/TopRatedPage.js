@@ -31,34 +31,18 @@ const TopRatedPage = () => {
     const getData = async () => {
       setLoading(true);
       try {
-        let res = await api.get(
-          `/movie/top_rated?${process.env.REACT_APP_API_KEY}&page=${pageNum}`
-        );
+        let url = `/movie/top_rated?page=${pageNum}`;
+        if (query) {
+          url = `/search/movie?language=en-US&page=1&query=${query}`;
+        }
+        let res = await api.get(url);
         setMovieList(res.data.results);
-        setLoading(false);
       } catch (error) {
         console.log(error);
       }
+      setLoading(false);
     };
     getData();
-    if (query) {
-      const getSearch = async () => {
-        setLoading(true);
-        try {
-          let res = await api.get(
-            `/search/movie?${process.env.REACT_APP_API_KEY}&language=en-US&page=1&query=${query}`
-          );
-
-          setMovieList(res.data.results);
-          setLoading(false);
-        } catch (error) {
-          console.log("Not found");
-        }
-      };
-      getSearch();
-    } else {
-      getData();
-    }
   }, [pageNum, query]);
 
   return (

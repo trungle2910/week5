@@ -33,44 +33,19 @@ const HomePage = () => {
     const getData = async () => {
       setLoading(true);
       try {
-        let res = await api.get(
-          `/movie/now_playing?${process.env.REACT_APP_API_KEY}&page=${pageNum}`
-        );
+        let url = `/movie/now_playing?page=${pageNum}`;
+        if (query) {
+          url = `/search/movie?language=en-US&page=1&query=${query}`;
+        }
+        let res = await api.get(url);
         setMovieList(res.data.results);
-        setLoading(false);
       } catch (error) {
         console.log(error);
       }
+      setLoading(false);
     };
     getData();
-    if (query) {
-      const getSearch = async () => {
-        setLoading(true);
-        try {
-          let res = await api.get(
-            `/search/movie?${process.env.REACT_APP_API_KEY}&language=en-US&page=1&query=${query}`
-          );
-
-          setMovieList(res.data.results);
-          setLoading(false);
-        } catch (error) {
-          console.log("Not found");
-        }
-      };
-      getSearch();
-    } else {
-      getData();
-    }
   }, [pageNum, query]);
-
-  // useEffect(() => {
-  //   getData();
-  //   if (query) {
-  //     getSearch();
-  //   } else {
-  //     getData();
-  //   }
-  // }, [query]);
 
   return (
     <>
@@ -115,12 +90,12 @@ const HomePage = () => {
       />
       <div>
         <Row>
-          <Col style={{ marginRight: "10%", marginLeft: "10%" }}>
+          <Col style={{ marginRight: "5%", marginLeft: "5%" }}>
             <div className="d-flex justify-content-around flex-wrap">
               {movieList.map((movie) => {
                 return (
                   <Card
-                    style={{ width: "27%", margin: "20px" }}
+                    style={{ width: "27%", margin: "3%" }}
                     onClick={() => handleClickMovie(movie.id)}
                   >
                     <Card.Img
