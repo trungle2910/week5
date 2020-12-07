@@ -5,12 +5,7 @@ import api from "../apiService";
 import { Card, Button, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { getMovieDetailData } from "../DataFetcher";
-
 const DetailPage = () => {
-  // const POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500/";
-  // const TRAILER_BASE_URL = "https://www.youtube.com/embed/";
-  // const API_KEY = "8bb27996f17866f8d8aa2ee7f2bb50aa";
   const [movieTrailer, setMovieTrailer] = useState(null);
   const [movieDetail, setMovieDetail] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,6 +17,14 @@ const DetailPage = () => {
   const MOVIE_ID = params.id;
   const handleCloseTrailer = () => {
     setShowTrailer(false);
+  };
+
+  const getMovieDetailData = async (movieId) => {
+    const API_URL = `${process.env.REACT_APP_URL}/movie/${movieId}?${process.env.REACT_APP_API_KEY}`;
+    const response = await fetch(API_URL);
+    const data = await response.json();
+    console.log(data);
+    return data;
   };
 
   const handleOpenTrailer = () => {
@@ -43,12 +46,6 @@ const DetailPage = () => {
   const getReview = async () => {
     try {
       setIsLoading(true);
-
-      // const API_URL = `https://api.themoviedb.org/3/movie/${MOVIE_ID}/reviews?api_key=${API_KEY}&language=en-US&page=1`;
-      // const res = await fetch(API_URL);
-      // const data = await res.json();
-
-      // console.log("WHAT IS", data);
       let res = await api.get(
         `/movie/${MOVIE_ID}/reviews?${process.env.REACT_APP_API_KEY}&language=en-US&page=1`
       );
@@ -62,11 +59,6 @@ const DetailPage = () => {
   const getTrailer = async () => {
     try {
       setIsLoading(true);
-      // const API_URL = `https://api.themoviedb.org/3/movie/${MOVIE_ID}/videos?api_key=${API_KEY}&language=en-US`;
-      // const res = await fetch(API_URL);
-      // const data = await res.json();
-      // console.log("movies trailer", data.results[0].key);
-      //
       let res = await api.get(
         `/movie/${MOVIE_ID}/videos?${process.env.REACT_APP_API_KEY}&language=en-US&page=1`
       );
